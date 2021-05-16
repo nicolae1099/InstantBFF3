@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "938817313910",
+    "project_id": "peppy-breaker-287515",
+    "storage_bucket": "peppy-breaker-287515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938817313910:android:9e6dd030c2f07e2c6b1357",
+        "android_client_info": {
+          "package_name": "com.example.instantbff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938817313910-e5q3qd8a7ttgao4dsnj5bonpp3jk61vj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRX7dxAVPvKW_6QeZi_1rHpGIuUtiFLd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938817313910-e5q3qd8a7ttgao4dsnj5bonpp3jk61vj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
