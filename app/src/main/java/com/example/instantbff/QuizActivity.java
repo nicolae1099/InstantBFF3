@@ -1,5 +1,6 @@
 package com.example.instantbff;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +65,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questions.add("Which one is your favorite sport?");
         topics.add("sports");
 
+        choices.addAll(Arrays.asList("Italian", "Chinese", "Lebanese", "FastFood", "Romanian", "Corean"));
+        questions.add("What is your prefered type of food?");
+        topics.add("food");
+
+        choices.addAll(Arrays.asList("Dramas", "Thrillers", "Horror", "Comedies", "Operas", "Historical"));
+        questions.add("What kind of movies do you enjoy more?\n");
+        topics.add("movie");
+
         quizButton1 = findViewById(R.id.quiz_button_1);
         quizButton1.setOnClickListener(this);
         quizButton2 = findViewById(R.id.quiz_button_2);
@@ -106,7 +115,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         quizButton6.setText(choices.get(topicCounter * TOPIC_SIZE + 5));
 
         Log.e("BFF", "" + topicCounter + " " + choices.size() + " " + responses.size());
-        if (topicCounter == (choices.size() - 6)) {
+        if ((topicCounter * TOPIC_SIZE) == choices.size() - 6) {
 
             DocumentReference docRef = firebaseFirestore.collection("users").document(userId);
             docRef.get().addOnCompleteListener(task -> {
@@ -133,12 +142,18 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
                         changedUser.put(topics.get(0), String.valueOf(responses.get(0)));
                         changedUser.put(topics.get(1), String.valueOf(responses.get(1)));
-                        //changedUser.put(topics.get(2), String.valueOf(responses.get(2)));
+                        changedUser.put(topics.get(2), String.valueOf(responses.get(2)));
+                        changedUser.put(topics.get(3), String.valueOf(responses.get(3)));
+                        //changedUser.put(topics.get(4), String.valueOf(responses.get(4)));
+
 
                         firebaseFirestore.collection("users").document(userId)
                                 .set(changedUser)
                                 .addOnSuccessListener(aVoid -> {
-                                    finish();
+                                    Intent intent = new Intent(QuizActivity.this, MatchActivity.class);
+                                    intent.putExtra("EXTRA_USER_ID", userId);
+                                    startActivity(intent);
+                                    //finish();
                                     Log.e("BFF", "DocumentSnapshot successfully written!");
                                 })
                                 .addOnFailureListener(e -> Log.e("BFF", "Error writing document", e));

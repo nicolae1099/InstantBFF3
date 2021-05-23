@@ -67,6 +67,8 @@ public class MatchActivity extends AppCompatActivity {
                         users.get(users.size()-1).setAnimals(String.valueOf(document.get("animals")));
                         users.get(users.size()-1).setMusic(String.valueOf(document.get("music")));
                         users.get(users.size()-1).setSport(String.valueOf(document.get("sport")));
+                        users.get(users.size()-1).setFood(String.valueOf(document.get("food")));
+                        users.get(users.size()-1).setMovie(String.valueOf(document.get("movie")));
                         users.get(users.size()-1).setImage_url(URL_INITIAL + document.getId() + URL_FINAL);
                         users.get(users.size()-1).setUserId(document.getId());
 
@@ -91,6 +93,12 @@ public class MatchActivity extends AppCompatActivity {
                                 score++;
                             }
                             if (user.getPersonality().equals(currentUser.getPersonality())) {
+                                score++;
+                            }
+                            if (user.getFood().equals(currentUser.getFood())) {
+                                score++;
+                            }
+                            if (user.getMovie().equals(currentUser.getMovie())) {
                                 score++;
                             }
 

@@ -19,12 +19,15 @@ public class User {
     private String image_url;
     private String interestedIn;
     private String userId;
+    private String food;
+    private String movie;
 
     public User() {
 
     }
 
-    public User(String fullName, String email, String city, String instagram, String age, String personality, String description) {
+    public User(String fullName, String email, String city, String instagram, String age, String personality,
+                String description) {
         this.fullName = fullName;
         this.email = email;
         this.city = city;
@@ -144,5 +147,21 @@ public class User {
 
     public void setInterestedIn(String interestedIn) {
         this.interestedIn = interestedIn;
+    }
+
+    public String getFood() {
+        return food;
+    }
+
+    public void setFood(String food) {
+        this.food = food;
+    }
+
+    public String getMovie() {
+        return movie;
+    }
+
+    public void setMovie(String movie) {
+        this.movie = movie;
     }
 }
