@@ -1,6 +1,8 @@
 package com.example.instantbff;
 
 
+import java.util.List;
+
 public class User {
 
     private String fullName;
@@ -14,6 +16,9 @@ public class User {
     private String music;
     private String sport;
     private Integer score;
+    private String image_url;
+    private String interestedIn;
+    private String userId;
 
     public User() {
 
@@ -115,5 +120,29 @@ public class User {
 
     public void setScore(Integer score) {
         this.score = score;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getInterestedIn() {
+        return interestedIn;
+    }
+
+    public void setInterestedIn(String interestedIn) {
+        this.interestedIn = interestedIn;
     }
 }

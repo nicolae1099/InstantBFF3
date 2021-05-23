@@ -3,10 +3,14 @@ package com.example.instantbff;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,15 +27,16 @@ public class MatchActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private String TAG = "BFF";
     private User currentUser;
-    private User tempUser;
     private String userId;
     private List<User> users = new ArrayList<>();
     private Integer maxScore = 4;
 
     private RecyclerView mRecyclerView;
-    private MatchAdapter myAdapter;
+    private static MatchAdapter myAdapter;
 
     private final Integer SCORE_OF_MYSELF = -1;
+    private final String URL_INITIAL = "https://firebasestorage.googleapis.com/v0/b/peppy-breaker-287515.appspot.com/o/img%2F";
+    private final String URL_FINAL = "?alt=media&token=64facbd5-c118-4fed-b723-9b4489199cae";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,15 +44,6 @@ public class MatchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
 
         userId = getIntent().getStringExtra("EXTRA_USER_ID");
-
-        /*
-        myProfile.setOnClickListener(view -> {
-            Intent intent = new Intent(MatchActivity.this, MyProfileActivity.class);
-            intent.putExtra("EXTRA_USER_ID", userId);
-            startActivity(intent);
-        });
-
-         */
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         CollectionReference docRef = firebaseFirestore.collection("users");
@@ -59,7 +55,7 @@ public class MatchActivity extends AppCompatActivity {
                     List<DocumentSnapshot> peopleDocuments = collection.getDocuments();
 
                     for (DocumentSnapshot document : peopleDocuments) {
-                        tempUser = new User(
+                        users.add(new User(
                                 String.valueOf(document.getData().get("name")),
                                 String.valueOf(document.getData().get("email")),
                                 String.valueOf(document.getData().get("city")),
@@ -67,21 +63,24 @@ public class MatchActivity extends AppCompatActivity {
                                 String.valueOf(document.getData().get("age")),
                                 String.valueOf(document.getData().get("personality")),
                                 String.valueOf(document.getData().get("description"))
-                        );
-                        tempUser.setAnimals(String.valueOf(document.get("animals")));
-                        tempUser.setMusic(String.valueOf(document.get("music")));
-                        tempUser.setSport(String.valueOf(document.get("sport")));
-                        tempUser.setScore(0);
-                        users.add(tempUser);
+                        ));
+                        users.get(users.size()-1).setAnimals(String.valueOf(document.get("animals")));
+                        users.get(users.size()-1).setMusic(String.valueOf(document.get("music")));
+                        users.get(users.size()-1).setSport(String.valueOf(document.get("sport")));
+                        users.get(users.size()-1).setImage_url(URL_INITIAL + document.getId() + URL_FINAL);
+                        users.get(users.size()-1).setUserId(document.getId());
+
+                        users.get(users.size()-1).setScore(0);
+
                         if (document.getId().equals(userId)) {
-                            currentUser = tempUser;
+                            currentUser = users.get(users.size()-1);
                             currentUser.setScore(-1);
                         }
                     }
 
                     for (User user : users) {
                         Integer score = 0;
-                        if (!user.getScore().equals(SCORE_OF_MYSELF)) {
+                        if (user.getScore() != SCORE_OF_MYSELF) {
                             if (user.getAnimals().equals(currentUser.getAnimals())) {
                                 score++;
                             }
@@ -95,13 +94,14 @@ public class MatchActivity extends AppCompatActivity {
                                 score++;
                             }
 
-                            user.setScore((score / maxScore) * 100);
+                            user.setScore((int) (( (double) score / (double) maxScore) * 100));
                         }
                     }
 
                     try {
                         mRecyclerView = findViewById(R.id.recyclerView);
                         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                        mRecyclerView.addItemDecoration(new DividerItemDecoration(MatchActivity.this, DividerItemDecoration.VERTICAL));
 
                         myAdapter = new MatchAdapter(users);
                         mRecyclerView.setAdapter(myAdapter);
@@ -109,13 +109,33 @@ public class MatchActivity extends AppCompatActivity {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
-
                 }
 
             } else {
                 Log.d(TAG, "get failed with ", task.getException());
             }
         });
-
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_myprofile:
+                Intent intent = new Intent(MatchActivity.this, MyProfileActivity.class);
+                intent.putExtra("EXTRA_USER_ID", userId);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

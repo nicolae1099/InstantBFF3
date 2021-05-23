@@ -49,20 +49,17 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         registerButton = findViewById(R.id.register_button);
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = fullNameTextView.getText().toString().trim();
-                String email = emailTextView.getText().toString().trim();
-                String password = passwordTextView.getText().toString().trim();
-                String city = cityTextView.getText().toString().trim();
-                String instagram = instagramTextView.getText().toString().trim();
-                String age = ageTextView.getText().toString().trim();
+        registerButton.setOnClickListener(v -> {
+            String name = fullNameTextView.getText().toString().trim();
+            String email = emailTextView.getText().toString().trim();
+            String password = passwordTextView.getText().toString().trim();
+            String city = cityTextView.getText().toString().trim();
+            String instagram = instagramTextView.getText().toString().trim();
+            String age = ageTextView.getText().toString().trim();
 
-                registerNewUser(name, email, password, city, instagram, age);
+            registerNewUser(name, email, password, city, instagram, age);
 
-                Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(RegisterActivity.this, "Register successful", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -70,41 +67,35 @@ public class RegisterActivity extends AppCompatActivity {
                                 String city, String instragram, String age) {
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(RegisterActivity.this, new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
+                .addOnSuccessListener(RegisterActivity.this, authResult -> {
 
-                        AuthResult tempResult = authResult;
-                        FirebaseUser user = mAuth.getCurrentUser();
+                    AuthResult tempResult = authResult;
+                    FirebaseUser user = mAuth.getCurrentUser();
 
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        Map<String, Object> person = new HashMap<>();
-                        person.put("name", name);
-                        person.put("email", email);
-                        person.put("city", city);
-                        person.put("instagram", instragram);
-                        person.put("age", age);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    Map<String, Object> person = new HashMap<>();
+                    person.put("name", name);
+                    person.put("email", email);
+                    person.put("city", city);
+                    person.put("instagram", instragram);
+                    person.put("age", age);
 
-                        String userId = user.getUid();
-                        Log.e("BFF", "USERid is " + userId);
-                        db.collection("users").document(userId)
-                                .set(person)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Intent intent = new Intent(RegisterActivity.this, TakeQuizActivity.class);
-                                        intent.putExtra("EXTRA_USER_ID", userId);
-                                        startActivity(intent);
-                                        Log.e("BFF", "DocumentSnapshot successfully written!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("BFF", "Error writing document", e);
-                                    }
-                                });
-                }
-                });
+                    String userId = user.getUid();
+                    Log.e("BFF", "USERid is " + userId);
+                    db.collection("users").document(userId)
+                            .set(person)
+                            .addOnSuccessListener(aVoid -> {
+                                Intent intent = new Intent(RegisterActivity.this, TakeQuizActivity.class);
+                                intent.putExtra("EXTRA_USER_ID", userId);
+                                startActivity(intent);
+                                Log.e("BFF", "DocumentSnapshot successfully written!");
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("BFF", "Error writing document", e);
+                                }
+                            });
+            });
     }
 }
