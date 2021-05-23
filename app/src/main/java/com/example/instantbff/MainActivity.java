@@ -1,8 +1,5 @@
 package com.example.instantbff;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userId = user.getUid();
 
-                            Intent intent = new Intent(MainActivity.this, MyProfileActivity.class);
+                            Intent intent = new Intent(MainActivity.this, MatchActivity.class);
                             intent.putExtra("EXTRA_USER_ID", userId);
                             startActivity(intent);
 

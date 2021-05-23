@@ -21,15 +21,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".RegisterActivity"/>
-        <activity
-            android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".RegisterActivity"/>
+        <activity android:name=".ForgotPasswordActivity"/>
         <activity android:name=".QuizActivity"/>
-
-        <activity
-            android:name=".MyProfileActivity"/>
+        <activity android:name=".MyProfileActivity"/>
         <activity android:name=".TakeQuizActivity"/>
+        <activity android:name=".MatchActivity"/>
     </application>
 
 </manifest>

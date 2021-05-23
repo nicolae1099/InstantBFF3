@@ -10,6 +10,10 @@ public class User {
     private String age;
     private String personality;
     private String description;
+    private String animals;
+    private String music;
+    private String sport;
+    private Integer score;
 
     public User() {
 
@@ -79,5 +83,37 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(String animals) {
+        this.animals = animals;
+    }
+
+    public String getMusic() {
+        return music;
+    }
+
+    public void setMusic(String music) {
+        this.music = music;
+    }
+
+    public String getSport() {
+        return sport;
+    }
+
+    public void setSport(String sport) {
+        this.sport = sport;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }
